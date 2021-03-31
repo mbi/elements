@@ -12,6 +12,7 @@ export default () => {
   // Base gallery logic
   if ($galleries.length > 0) {
     $galleries.each(function () {
+      let flkty = null;
       Imagesloaded(this, () => {
         const $items = $(this).find('.gallery-item');
 
@@ -26,7 +27,7 @@ export default () => {
         });
 
         // Instantiate Flickity gallery
-        const flkty = new Flickity(this, {
+        flkty = new Flickity(this, {
           pageDots: false,
           fullscreen: true,
           setGallerySize: true,
@@ -46,6 +47,9 @@ export default () => {
         // Improve prev/next buttons position
         const height = $(this).find('.gallery-item.is-selected img').height();
         $(this).find('.flickity-prev-next-button').css('top', `${height / 2}px`);
+        // once images have been loaded, resize it
+        flkty('resize');
+        console.log('resizing');
       });
     });
   }
@@ -53,6 +57,7 @@ export default () => {
   // Nav gallery logic
   if ($galleryNavs.length > 0) {
     $galleryNavs.each(function () {
+      let flkty = null;
       Imagesloaded(this, () => {
         const target = $(this).data('gallery');
 
@@ -60,13 +65,17 @@ export default () => {
         $(this).addClass('ready');
 
         // Instantiate Flickity nav
-        const flkty = new Flickity(this, {
+        flkty = new Flickity(this, {
           asNavFor: `#${target}`,
           cellAlign: 'left',
           pageDots: false,
           prevNextButtons: false,
           contain: true,
         });
+
+        // once images have been loaded, resize it
+        flkty('resize');
+        console.log('resizing');
       });
     });
   }
